@@ -20,7 +20,7 @@ var (
 	fromBeginning = kingpin.Flag("from-beginning", "get messages from the beginning").Short('b').Bool()
 	offset        = kingpin.Flag("offset", "get messages from this offset (0 = get only new messages)").Default("0").Short('o').Int64()
 	group         = kingpin.Flag("group", "consumer group").Default("kf").Short('g').String()
-	clientId      = kingpin.Flag("clientid", "client id").Default("kf").Short('c').String()
+	clientID      = kingpin.Flag("clientid", "client id").Default("kf").Short('c').String()
 	partition     = kingpin.Flag("partition", "partition").Default("0").Short('p').Int()
 	topic         = kingpin.Arg("topic", "topic to listen for").String()
 )
@@ -47,7 +47,7 @@ func main() {
 		log.Println("connecting to kafka, using brokers from zookeeper:", brokerString)
 	}
 
-	client, err := sarama.NewClient(*clientId, brokerString, nil)
+	client, err := sarama.NewClient(*clientID, brokerString, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
