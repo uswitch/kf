@@ -9,7 +9,7 @@ A tool to consume and display Kafka messages.
 
     Flags:
       --help               Show help.
-      -z, --zookeeper="localhost:2181"  
+      -z, --zookeeper="localhost:2181"
                            host:port of zookeeper server (defaults to value of ZOOKEEPER environment variable)
       -l, --list           list available topics and quit
       -v, --verbose        log informative messages (including offsets)
@@ -42,7 +42,7 @@ To install on Ubuntu
     $ sudo apt-get install golang
 
 To install on OSX
- 
+
     $ brew install go
 
 Remember to set up a workspace and set GOPATH (see https://golang.org/doc/code.html)
@@ -53,11 +53,11 @@ It might also be a good idea to put `$GOPATH/bin` in your `PATH`.
 
 To install on Ubuntu
 
-    $ sudo apt-get install mercurial 
+    $ sudo apt-get install mercurial
 
 To install on OSX
- 
-    $ brew install mercurial 
+
+    $ brew install mercurial
 
 ### Bazaar
 
@@ -66,7 +66,7 @@ To install on Ubuntu
     $ sudo apt-get install bzr
 
 To install on OSX
- 
+
     $ brew install bazaar
 
 ### Zookeeper libs/headers
@@ -89,13 +89,13 @@ For either platform:
 
 On Ubuntu, just:
 
-    $ go install github.com/uswitch/kf
+    $ go get github.com/uswitch/kf
 
 On OSX:
 
     $ export CGO_CFLAGS='-I/usr/local/include/zookeeper'
     $ export CGO_LDFLAGS='-L/usr/local/lib'
-    $ go install github.com/uswitch/kf
+    $ go get github.com/uswitch/kf
 
 ## Why?
 
