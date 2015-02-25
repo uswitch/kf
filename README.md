@@ -1,6 +1,6 @@
 # kf
 
-A tool to consume and display Kafka messages.
+A tool to consume and display Kafka messages. Compatible with Kafka 0.8.0 only.
 
 ## Usage
 
