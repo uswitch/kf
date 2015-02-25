@@ -93,7 +93,16 @@ func main() {
 		os.Exit(0)
 	}
 
-	config := sarama.NewConsumerConfig()
+	master, err := sarama.NewConsumer(client, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if *verbose {
+		log.Println("master consumer ready")
+	}
+
+	config := sarama.NewPartitionConsumerConfig()
 	config.OffsetMethod = sarama.OffsetMethodNewest
 
 	if *fromBeginning {
@@ -103,13 +112,13 @@ func main() {
 		config.OffsetValue = *offset
 	}
 
-	consumer, err := sarama.NewConsumer(client, *topic, int32(*partition), *group, config)
+	consumer, err := master.ConsumePartition(*topic, int32(*partition), config)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	if *verbose {
-		log.Println("consumer ready")
+		log.Println("partition consumer ready")
 	}
 	defer consumer.Close()
 
@@ -126,18 +135,16 @@ func main() {
 
 	for {
 		select {
-		case event := <-consumer.Events():
-			if event.Err != nil {
-				log.Println(event.Err)
-			} else {
-				if *verbose {
-					log.Println("offset", event.Offset)
-				}
-				fmt.Println(string(event.Value[:]))
-				msgCount++
-				if *max != 0 && msgCount >= *max {
-					return
-				}
+		case error := <-consumer.Errors():
+			log.Println(error)
+		case message := <-consumer.Messages():
+			if *verbose {
+				log.Println("offset", message.Offset)
+			}
+			fmt.Println(string(message.Value[:]))
+			msgCount++
+			if *max != 0 && msgCount >= *max {
+				return
 			}
 		case <-stop:
 			if *verbose {
