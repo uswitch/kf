@@ -81,21 +81,15 @@ To install on OSX
 
 ## Installation
 
-For either platform:
+To install on Ubuntu
 
-    $ mkdir -p $GOPATH/src/github.com/uswitch
-    $ cd $GOPATH/src/github.com/uswitch
-    $ git clone git@github.com:uswitch/kf
+    $ go get -u github.com/uswitch/kf
 
-On Ubuntu, just:
-
-    $ go get github.com/uswitch/kf
-
-On OSX:
+To install on OSX:
 
     $ export CGO_CFLAGS='-I/usr/local/include/zookeeper'
     $ export CGO_LDFLAGS='-L/usr/local/lib'
-    $ go get github.com/uswitch/kf
+    $ go get -u github.com/uswitch/kf
 
 ## Why?
 
