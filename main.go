@@ -47,7 +47,9 @@ func main() {
 		log.Println("connecting to kafka, using brokers from zookeeper:", brokerString)
 	}
 
-	client, err := sarama.NewClient(*clientID, brokerString, nil)
+	clientConfig := sarama.NewConfig()
+	clientConfig.ClientID = *clientID
+	client, err := sarama.NewClient(brokerString, clientConfig)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -84,7 +86,7 @@ func main() {
 	}
 
 	if *latest {
-		latestOffset, err := client.GetOffset(*topic, int32(*partition), sarama.LatestOffsets)
+		latestOffset, err := client.GetOffset(*topic, int32(*partition), sarama.OffsetNewest)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -93,7 +95,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	master, err := sarama.NewConsumer(client, nil)
+	master, err := sarama.NewConsumerFromClient(client)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -102,17 +104,15 @@ func main() {
 		log.Println("master consumer ready")
 	}
 
-	config := sarama.NewPartitionConsumerConfig()
-	config.OffsetMethod = sarama.OffsetMethodNewest
-
+	consumeFrom := sarama.OffsetNewest
 	if *fromBeginning {
-		config.OffsetMethod = sarama.OffsetMethodOldest
-	} else if *offset > 0 {
-		config.OffsetMethod = sarama.OffsetMethodManual
-		config.OffsetValue = *offset
+		consumeFrom = sarama.OffsetOldest
+	}
+	if *offset > 0 {
+		consumeFrom = *offset
 	}
 
-	consumer, err := master.ConsumePartition(*topic, int32(*partition), config)
+	consumer, err := master.ConsumePartition(*topic, int32(*partition), consumeFrom)
 	if err != nil {
 		log.Fatal(err)
 	}
