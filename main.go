@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/Shopify/sarama"
 	"github.com/uswitch/kafkazk"
+	"gopkg.in/Shopify/sarama.v1"
 	"gopkg.in/alecthomas/kingpin.v1"
 	"log"
 	"os"
